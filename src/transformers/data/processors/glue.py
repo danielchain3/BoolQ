@@ -189,7 +189,7 @@ class BoolqProcessor(DataProcessor):
         return self._create_examples(self._read_json(os.path.join(data_dir, "test.jsonl")), "test")
 
     def get_labels(self):
-        return ["true", "false"]
+        return [True, False]
 
     def _read_json(self, input_file):
         with open(input_file, "r", encoding="utf-8") as fin:
