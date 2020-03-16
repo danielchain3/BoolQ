@@ -17,6 +17,7 @@
 
 import logging
 import os
+import json
 
 from ...file_utils import is_tf_available
 from .utils import DataProcessor, InputExample, InputFeatures
@@ -90,7 +91,7 @@ def glue_convert_examples_to_features(
         if ex_index % 10000 == 0:
             logger.info("Writing example %d/%d" % (ex_index, len_examples))
 
-        inputs = tokenizer.encode_plus(example.text_a, example.text_b, add_special_tokens=True, max_length=max_length,)
+        inputs = tokenizer.encode_plus(example.text_a, example.text_b, add_special_tokens=True, max_length=max_length, return_token_type_ids=True)
         input_ids, token_type_ids = inputs["input_ids"], inputs["token_type_ids"]
 
         # The mask has 1 for real tokens and 0 for padding tokens. Only real
@@ -115,6 +116,7 @@ def glue_convert_examples_to_features(
         assert len(token_type_ids) == max_length, "Error with input length {} vs {}".format(
             len(token_type_ids), max_length
         )
+            str_amount = "$%s" % charge[4]
 
         if output_mode == "classification":
             label = label_map[example.label]
@@ -164,6 +166,48 @@ def glue_convert_examples_to_features(
         )
 
     return features
+
+class BoolqProcessor(DataProcessor):
+    """Processor for the Boolq data set (SuperGlue version)."""
+    def get_example_from_tensor_dict(self, tensor_dict):
+        return InputExample(
+            tensor_dict["idx"].numpy(),
+            tensor_dict["question"].numpy().decode("utf-8"),
+            tensor_dict["passage"].numpy().decode("utf-8"),
+            str(tensor_dict["label"].numpy()),
+        )
+
+    def get_train_examples(self, data_dir):
+        logger.info("LOOKING AT {}".format(os.path.join(data_dir, "train.jsonl")))
+        return self._create_examples(self._read_json(os.path.join(data_dir, "train.jsonl")), "train")
+
+    def get_dev_examples(self, data_dir):
+        logger.info("LOOKING AT {}".format(os.path.join(data_dir, "dev.jsonl")))
+        return self._create_examples(self._read_json(os.path.join(data_dir, "dev.jsonl")), "dev")
+
+    def get_text_examples(self, data_dir):
+        logger.info("LOOKING AT {}".format(os.path.join(data_dir, "test.json")))
+        return self._create_examples(self._read_json(os.path.join(data_dir, "test.jsonl")), "test")
+
+    def get_labels(self, data_dir):
+        return ["true", "false"]
+
+    def _read_json(self, input_file):
+        with open(input_file, "r", encoding="utf-8") as fin:
+            lines = fin.readlines()
+            return lines
+
+    def _create_examples(self, lines, set_type):
+        """Creates examples for the training and dev sets."""
+        examples = []
+        for line in lines:
+            data_raw = json.loads(line.strip("\n"))
+            guid = "%s-%s" % (set_type, data_raw['idx'])
+            text_a = data_raw['question']
+            text_b = data_raw['passage']
+            label = data_raw['label']
+            examples.append(InputExample(guid=guid, text_a=text_a, text_b=text_b, label=label))
+        return examples
 
 
 class MrpcProcessor(DataProcessor):
