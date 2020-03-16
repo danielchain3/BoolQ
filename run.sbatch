@@ -1,3 +1,4 @@
+srun --nodes=1 --cpus-per-task=1 --time=1:00:00 --gres=gpu:1  --mem=16GB --pty /bin/bash
 #SBATCH --gres=gpu:1
 #SBATCH --mem=16000
 #SBATCH --time=0:30:00

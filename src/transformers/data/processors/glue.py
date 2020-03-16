@@ -181,8 +181,8 @@ class BoolqProcessor(DataProcessor):
         return self._create_examples(self._read_json(os.path.join(data_dir, "train.jsonl")), "train")
 
     def get_dev_examples(self, data_dir):
-        logger.info("LOOKING AT {}".format(os.path.join(data_dir, "dev.jsonl")))
-        return self._create_examples(self._read_json(os.path.join(data_dir, "dev.jsonl")), "dev")
+        logger.info("LOOKING AT {}".format(os.path.join(data_dir, "val.jsonl")))
+        return self._create_examples(self._read_json(os.path.join(data_dir, "val.jsonl")), "dev")
 
     def get_text_examples(self, data_dir):
         logger.info("LOOKING AT {}".format(os.path.join(data_dir, "test.json")))
