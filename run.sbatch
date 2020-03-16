@@ -20,7 +20,7 @@ GLUE_DIR=/scratch/${NETID}/nlu/data
 
 # store the data
 wget https://dl.fbaipublicfiles.com/glue/superglue/data/v2/BoolQ.zip
-unzip BoolQ.zip -d GLUE_DIR
+unzip BoolQ.zip -d ${GLUE_DIR}
 
 cd /scratch/${NETID}/nlu
 mkdir code

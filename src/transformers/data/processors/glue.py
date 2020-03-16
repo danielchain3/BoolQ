@@ -189,7 +189,7 @@ class BoolqProcessor(DataProcessor):
         logger.info("LOOKING AT {}".format(os.path.join(data_dir, "test.json")))
         return self._create_examples(self._read_json(os.path.join(data_dir, "test.jsonl")), "test")
 
-    def get_labels(self, data_dir):
+    def get_labels(self):
         return ["true", "false"]
 
     def _read_json(self, input_file):
