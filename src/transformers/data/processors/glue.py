@@ -116,7 +116,7 @@ def glue_convert_examples_to_features(
         assert len(token_type_ids) == max_length, "Error with input length {} vs {}".format(
             len(token_type_ids), max_length
         )
-            str_amount = "$%s" % charge[4]
+        str_amount = "$%s" % charge[4]
 
         if output_mode == "classification":
             label = label_map[example.label]

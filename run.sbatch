@@ -19,6 +19,12 @@ GLUE_DIR=/scratch/${NETID}/nlu/data
 wget https://dl.fbaipublicfiles.com/glue/superglue/data/v2/BoolQ.zip
 unzip BoolQ.zip -d GLUE_DIR
 
+cd /scratch/${NETID}/nlu
+mkdir code
+cd code
+git clone https://github.com/danielchain3/transformers.git
+cd transformers
+
 TASK_NAME=BoolQ
 export PYTHONPATH=/scratch/${NETID}/nlu/code/transformers/src:$PYTHONPATH
 python ./examples/run_glue.py \
