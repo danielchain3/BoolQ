@@ -8,9 +8,12 @@ module load anaconda3/5.3.1
 module load cuda/10.0.130
 module load gcc/6.3.0
 
-# Replace with your NetID
 NETID=dec415
 source activate /scratch/${NETID}/nlu/env
+
+# remove old files
+rm -rf /scratch/${NETID}/nlu/data
+rm -rf /scratch/${NETID}/nlu/code
 
 # specify where the data is stored
 GLUE_DIR=/scratch/${NETID}/nlu/data
