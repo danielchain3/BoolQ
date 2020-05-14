@@ -1,4 +1,4 @@
-srun --nodes=1 --cpus-per-task=1 --time=1:00:00 --gres=gpu:1  --mem=16GB --pty /bin/bash
+#!/bin/sh
 #SBATCH --gres=gpu:1
 #SBATCH --mem=16000
 #SBATCH --time=0:30:00
@@ -11,10 +11,6 @@ module load gcc/6.3.0
 
 NETID=dec415
 source activate /scratch/${NETID}/nlu/env
-
-# remove old files
-rm -rf /scratch/${NETID}/nlu/data
-rm -rf /scratch/${NETID}/nlu/code
 
 # specify where the data is stored
 GLUE_DIR=/scratch/${NETID}/nlu/data
